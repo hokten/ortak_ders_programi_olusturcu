@@ -1,0 +1,187 @@
+#lst_bolumler {
+  list-style-type:none;
+  width:400px;
+}
+#lst_bolumler > li {
+  background-color:#EFF2EF;
+  border-bottom:1px solid black;
+  padding:5px;
+}
+#lst_bolumler > li:before {
+  content: "\229E \0020";
+}
+
+#lst_bolumler > li:hover {
+  background-color:#BDB4BF;
+  //height:30px;
+}
+#lst_bolumler > li a {
+  display:block;
+  float:right;
+  width:40px;
+  text-align:right;
+}
+.lst_programlar {
+  list-style-type:none;
+}
+.lst_programlar > li {
+  background-color:#D9D9D9;
+  padding:5px;
+  margin-top:2px;
+}
+.lst_programlar > li:before {
+  content: "\229F \0020";
+}
+
+.lst_programlar > li:hover {
+  background-color:#BC8DA7;
+}
+.lst_programlar > li a {
+  display:block;
+  float:right;
+  width:40px;
+  text-align:right;
+}
+
+
+
+
+
+/* DivTable.com */
+.tablo {
+  display: table;
+  border-spacing:2px;
+}
+.tablosatiri {
+  display: table-row;
+}
+.tablobasligi {
+  background-color: #EEE;
+  display: table-header-group;
+  font-weight: bold;
+}
+.tablohucresi, .tablobaslikhucresi {
+  border: 1px solid #999999;
+  display: table-cell;
+  vertical-align:middle;
+}
+.tablogovdesi {
+  display: table-row-group;
+}
+.tabloicbosluk {
+  padding: 3px 10px;
+}
+
+/* Program tablosu gün sütunu hücre içi katmanlar */ 
+.gun {
+  height:62px;
+}
+/* Program tablosu saat satırı hücre içi katmanlar */
+.saat {
+  width:62px;
+}
+
+/* Program tablosu her hücre içinde bulunan aktivite içericileri */
+.ders {
+  width:64px;
+  height:64px;
+  overflow:hidden;
+}
+
+.bostaderslerlistesi {
+  float:left;
+  list-style-type:none;
+  padding:1px;
+}
+.aktivite {
+  height:62px;
+  width:62px;
+  margin:1px;
+  /*padding:1px;*/
+}
+
+#subject_34 {
+  list-style-type:none;
+  float:left;
+  border:1px solid red;
+  padding:5px;
+}
+.avt_container {
+  width:64px;
+  height:64px;
+  border:1px solid blue;
+  margin:2px;
+  overflow:hidden;
+}
+
+#subject_35 {
+  float:left;
+  border:1px solid red;
+  width:80px;
+}
+
+.derskodu {
+  width:100%;
+  text-align:center;
+  font-weight:bold;
+  font-size:10px;
+}
+.ogretmen, .dersadi {
+  width:100%;
+  text-align:center;
+  font-weight:bold;
+  font-size:10px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
+.salon select {
+  width:90%;
+  font-weight:bold;
+  font-size:10px;
+}
+.salon {
+  text-align:center;
+}
+.ex-moved {
+  border:1px dotted yellow;
+  background-color:red;
+
+}
+/* Her ders için ayrı renk şeması */
+/* Birinci ders */
+/*
+.dersrenk0 {
+  background-color:#B8CDF8;
+}
+.dersrenk0 .derskodu {
+  color:#313541;
+}
+.dersrenk0 .ogretmen {
+  color:#8174C6;
+}
+
+.dersrenk1 {
+  background-color:#BAA898;
+}
+.dersrenk1 .derskodu {
+  color:#003A59;
+}
+.dersrenk1 .ogretmen {
+  color:#8E000E;
+}
+
+.dersrenk2 {
+  background-color:#FCC558;
+}
+.dersrenk2 .derskodu {
+  color:#EA8846;
+}
+.dersrenk2 .ogretmen {
+  color:#49C1AF;
+}
+
+*/

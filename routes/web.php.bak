@@ -1,0 +1,68 @@
+<?php
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Bolum;
+use App\Program;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/bolum', function () {
+
+  $bolumler = Bolum::all();
+    return view('bolum', ['bolumler'=>$bolumler]);
+});
+
+Route::post('/bolum', function (Request $request) {
+  //Log::info(print_r($request, true));
+  $bolum = Bolum::create($request->all());
+  //return response()->json($bolum);
+});
+
+Route::delete('/bolum/{bolum_id?}',function($bolum_id){
+  $bolum = Bolum::destroy($bolum_id);
+  return response()->json($bolum);
+});
+
+
+
+// Program ekleme bölümü
+Route::get('/programekle', function () {
+  $bolumler = Bolum::all();
+  return view('programekle', ['bolumler'=>$bolumler]);
+});
+
+Route::post('/programekle', function (Request $request) {
+  //Log::info(print_r(dd($request->all()), true));
+  $bolumler = Bolum::all();
+  $bolum_id = $request->frm_bolum;
+  $program = $request->frm_program;
+
+  $bolum = Bolum::findOrFail($bolum_id);
+  $dizi = array('bolumler'=>$bolumler, 'bolum'=>$bolum);
+
+  //Log::info(dd($dizi));
+  Program::create(['program'=>$program, 'bolum_id'=>$bolum_id]);
+  return view('programekle', $dizi);
+});
+
+
+
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');

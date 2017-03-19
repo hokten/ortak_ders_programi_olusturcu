@@ -1,0 +1,150 @@
+@color: steelblue; // You may also use RGB Colors
+@palette: mono; // No effect for now!
+
+// Base
+body {
+  margin: 1rem;
+  
+  background-color: #556270;
+  color: #fff;
+}
+
+.mono,
+.complement,
+.triad {
+  font-size: 0;
+  border-radius: 10px;
+  box-shadow: 0 0 8px 1px rgba(0,0,0,.4);
+  margin: 1rem 0;
+
+  > div {
+    display: inline-block;
+    width: 20%;
+    padding: 1rem 0;
+    
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+
+    &:first-child {
+      border-radius: 10px 0 0 10px;
+    }
+
+    &:last-child {
+      border-radius: 0 10px 10px 0;
+    }
+  }
+}
+
+h2 {
+  text-align: center;
+}
+
+// Mixins
+.palette (@color) {
+  .primary-1 {
+    background-color: @color;
+    color: contrast(@color, #333, #fff, 60%);
+  }
+
+  .primary-2 {
+    background-color: lighten(@color, 15%);
+    color: contrast(lighten(@color, 15%), #333, #fff, 60%);
+  }
+
+  .primary-3 {
+    background-color: lighten(@color, 25%);
+    color: contrast(lighten(@color, 25%), #333, #fff, 60%);
+  }
+
+  .primary-4 {
+    background-color: darken(@color, 15%);
+    color: contrast(darken(@color, 15%), #333, #fff, 60%);
+  }
+
+  .primary-5 {
+    background-color: darken(@color, 25%);
+    color: contrast(darken(@color, 25%), #333, #fff, 60%);
+  }
+}
+
+.palette (@color) /*when (@palette = complement)*/ {
+  .complement-1 {
+    background-color: spin(@color, 120);
+    color: contrast(spin(@color, 120), #333, #fff, 60%);
+  }
+
+  .complement-2 {
+    background-color: lighten(spin(@color, 120), 15%);
+    color: contrast(lighten(spin(@color, 120), 15%), #333, #fff, 60%);
+  }
+
+  .complement-3 {
+    background-color: lighten(spin(@color, 120), 25%);
+    color: contrast(lighten(spin(@color, 120), 25%), #333, #fff, 60%);
+  }
+
+  .complement-4 {
+    background-color: darken(spin(@color, 120), 15%);
+    color: contrast(darken(spin(@color, 120), 15%), #333, #fff, 60%);
+  }
+
+  .complement-5 {
+    background-color: darken(spin(@color, 120), 25%);
+    color: contrast(darken(spin(@color, 120), 25%), #333, #fff, 60%);
+  }
+}
+
+.palette (@color) /*when (@palette = triad)*/ {
+  .secondary-1 {
+    background-color: spin(@color, 180);
+    color: contrast(spin(@color, 180), #333, #fff, 60%);
+  }
+
+  .secondary-2 {
+    background-color: lighten(spin(@color, 180), 15%);
+    color: contrast(lighten(spin(@color, 180), 15%), #333, #fff, 60%);
+  }
+
+  .secondary-3 {
+    background-color: lighten(spin(@color, 180), 25%);
+    color: contrast(lighten(spin(@color, 180), 25%), #333, #fff, 60%);
+  }
+
+  .secondary-4 {
+    background-color: darken(spin(@color, 180), 15%);
+    color: contrast(darken(spin(@color, 180), 15%), #333, #fff, 60%);
+  }
+
+  .secondary-5 {
+    background-color: darken(spin(@color, 180), 25%);
+    color: contrast(darken(spin(@color, 180), 25%), #333, #fff, 60%);
+  }
+
+  .tertiary-1 {
+    background-color: spin(@color, 80);
+    color: contrast(spin(@color, 80), #333, #fff, 60%);
+  }
+
+  .tertiary-2 {
+    background-color: lighten(spin(@color, 80), 15%);
+    color: contrast(lighten(spin(@color, 80), 15%), #333, #fff, 60%);
+  }
+
+  .tertiary-3 {
+    background-color: lighten(spin(@color, 80), 25%);
+    color: contrast(lighten(spin(@color, 80), 25%), #333, #fff, 60%);
+  }
+
+  .tertiary-4 {
+    background-color: darken(spin(@color, 80), 15%);
+    color: contrast(darken(spin(@color, 80), 15%), #333, #fff, 60%);
+  }
+
+  .tertiary-5 {
+    background-color: darken(spin(@color, 80), 25%);
+    color: contrast(darken(spin(@color, 80), 25%), #333, #fff, 60%);
+  }
+}
+
+.palette (@color);
