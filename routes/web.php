@@ -169,7 +169,7 @@ Route::get('/dersprogrami/{tip}/{kimlik}', function ($tip, $kimlik) {
    $saatler = Saat::all();
    $salonlar = Salon::all();
    return view('dersprogrami', ['gunler'=>$gunler, 'saatler' => $saatler, 'nesne' => $nesne, 'salonlar' => $salonlar, 'dersler' => $dersler]);
-})->middleware('auth');
+});
 
 
 
@@ -182,19 +182,48 @@ Route::get('/dersprogrami/{tip}/{kimlik}', function ($tip, $kimlik) {
 
 Route::post('/aktivitedenetle', function (Request $request) {
    //Log::info(print_r($request, true));
-   $cksn_aktvt_sayisi = 0;
+   $cksn_aktvt_sayisi_ogrt = 0;
+   $cksn_aktvt_sayisi_sln = 0;
+   $mesajlar = array();
+   $durum = null;
+
    $aktivite_id = $request->input('aktiviteid');
    $gun_id = $request->input('gunid');
    $saat_id = $request->input('saatid');
    $salon_id = $request->input('salonid');
-   $cksn_aktvt_sayisi = Aktivite::find($aktivite_id)->ogretmen->ogrt_aktvt_mstlk_dntl($gun_id, $saat_id);
-   if($cksn_aktvt_sayisi == 0) {
-      $aktf_aktivite = Aktivite::find($aktivite_id);
-      $aktf_aktivite->gun_id = $gun_id;
-      $aktf_aktivite->saat_id = $saat_id;
-      $aktf_aktivite->save();
+   if($salon_id == 0) {
+      $durum = false;
+      $mesajlar[] = "Dersin yapılacağı salonu seçmelisiniz";
+      $dizi = array("durum" => $durum, "mesajlar" => $mesajlar );
+      return response()->json($dizi);
    }
-   $dizi = array("a" => $aktivite_id, "d" => $gun_id, "h" => $saat_id, 'sayi'=>$cksn_aktvt_sayisi );
+
+   // Aktivite sahibi ogretmenin o gün ve saatte başka dersi olup olmadığı kontrol ediliyor
+   $cksn_aktvt_sayisi_ogrt += Aktivite::find($aktivite_id)->ogretmen->aktvt_sayisi($gun_id, $saat_id);
+   $cksn_aktvt_sayisi_sln += Salon::find($salon_id)->aktvt_sayisi($gun_id, $saat_id);
+
+   if($cksn_aktvt_sayisi_ogrt > 0) {
+      $mesajlar[] = "Öğretmenin o gün ve saatte başka dersi var.";
+      $durum = false;
+      $dizi = array("durum" => $durum, "mesajlar" => $mesajlar );
+      return response()->json($dizi);
+   }
+
+   if($cksn_aktvt_sayisi_sln > 0) {
+      $mesajlar[] = "Salonda o gün ve saatte başka bir ders var.";
+      $durum = false;
+      $dizi = array("durum" => $durum, "mesajlar" => $mesajlar );
+      return response()->json($dizi);
+   }
+   $aktf_aktivite = Aktivite::find($aktivite_id);
+   $aktf_aktivite->gun_id = $gun_id;
+   $aktf_aktivite->saat_id = $saat_id;
+   $aktf_aktivite->salon_id = $salon_id;
+   $aktf_aktivite->save();
+   $mesajlar[] = "Aktivite başarı ile eklendi";
+   $durum = true;
+
+   $dizi = array("durum" => $durum, "mesajlar" => $mesajlar );
    return response()->json($dizi);
 });
 

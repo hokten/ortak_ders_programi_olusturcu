@@ -9,7 +9,7 @@
       <link href="{{asset('css/renksema.css')}}" rel="stylesheet">
       <link href="{{asset('css/dragula.min.css')}}" rel="stylesheet">
       <script src="https://code.jquery.com/jquery-3.1.1.min.js" type="text/javascript"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js" type="text/javascript"></script>
+      <script src="{{asset('js/dragula.js')}}" type="text/javascript"></script>
       <script src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
       <script type="text/javascript" src="{{asset('js/noty/packaged/jquery.noty.packaged.min.js')}}"></script>
       <script src="{{asset('js/program.js')}}"></script>

@@ -9,6 +9,10 @@
       <link href="{{asset('css/renksema.css')}}" rel="stylesheet">
       <link href="{{asset('css/dragula.min.css')}}" rel="stylesheet">
       <script src="https://code.jquery.com/jquery-3.1.1.min.js" type="text/javascript"></script>
+      <script type="text/javascript">
+         var path = "{{url('/')}}";
+      </script>
+
       <script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js" type="text/javascript"></script>
       <script src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
       <script type="text/javascript" src="{{asset('js/noty/packaged/jquery.noty.packaged.min.js')}}"></script>
@@ -76,8 +80,13 @@
                   <div class="salon">
                      <a href="#/">{{$aktivite->salon_cek()['salonadi']}}</a>
                      <select id="salon_secim_{{$aktivite->id}}">
+                        <option value="0">SEÇ</option>
                         @foreach ($salonlar as $salon)
+                        @if ($aktivite->salon_cek()['salonid'] == $salon->id)
+                        <option value="{{$salon->id}}" selected>{{$salon->salonadi}}</option>
+                        @else
                         <option value="{{$salon->id}}">{{$salon->salonadi}}</option>
+                        @endif
                         @endforeach
                      </select>
                   </div>

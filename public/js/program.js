@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  var abd = "sdgdsf";
 function delay() {
   // `delay` returns a promise
   return new Promise(function(resolve, reject) {
@@ -47,7 +48,7 @@ function delay() {
     }
     $.ajax({
       type: "PUT",
-      url: '../aktivitesifirla/' + aktivite_id,
+      url: path + '/aktivitesifirla/' + aktivite_id,
       success: function (data) {
       },
       error: function (data) {
@@ -59,7 +60,7 @@ function delay() {
 
 
 
-  function aktivite_denetle_ekle(aktivite_id, gun_id, saat_id, salon_id, suruklenen) {
+  function aktivite_denetle_ekle(aktivite_id, gun_id, saat_id, salon_id, callback) {
     $.ajaxSetup({
       headers: {
         'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -78,12 +79,7 @@ function delay() {
       url: '/aktivitedenetle',
       data: srkln_aktvt_blg,
       dataType: 'json',
-      success: function(data) {
-        if(data.sayi>0) {
-          suruklenen.cancel();
-          return false;
-        }
-      },
+      success:callback,
       error: function (data) {
         console.log('Error:', data);
       }
@@ -94,8 +90,6 @@ function delay() {
     dondurmeyi_aktiflestir($('.aktivite'));
 
 
-
-
   var hucreler = Array.prototype.slice.call($("li.avt_container").toArray());
   //var dersler = Array.prototype.slice.call($('div[id^="ders_"]').toArray());
   var dersler = Array.prototype.slice.call($('.ders').toArray());
@@ -103,18 +97,17 @@ function delay() {
   console.log(hepsi);
   var drake = dragula(hepsi, {
     revertOnSpill: true,
-    accepts: function (el, target) {
-      console.log(el);
-      console.log(target);
-      return true;
-    }
-  });
+     });
 
   drake
   .on('drag', function (el) {
     console.log("dragging");
   })
   .on('drop', function(dragged, dropped, source) {
+    var draganddrop = this;
+    var salonselect = dragged.querySelector('select');
+    var salon_id = salonselect.options[salonselect.selectedIndex].value;
+    console.log(salon_id);
     var dropped_ul = dropped.parentElement;
     var srkln_aktv_id = dragged.id.split('-')[1].split('_')[1];
     if(dropped.className == 'avt_container') {
@@ -137,38 +130,18 @@ function delay() {
       }
       dsln_gun_id = dropped.id.split('_')[1];
       dsln_saat_id = dropped.id.split('_')[2];
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+      aktivite_denetle_ekle(srkln_aktv_id, dsln_gun_id, dsln_saat_id, salon_id, function(data) {
+        console.log(dragged);
+        console.log(dropped);
+        console.log(data);
+        if(data.durum == false) {
+          $(source).append($(dragged));
+          $.each(data.mesajlar, function(index, value) {
+            bilgilendirme_mesaji(value, "error");
+          });
         }
       });
 
-      var srkln_aktvt_blg = {
-        'aktiviteid':srkln_aktv_id,
-        'gunid':dsln_gun_id,
-        'saatid':dsln_saat_id,
-        'salonid':4
-      }
-
-      $.ajax({
-        type: "POST",
-        url: '/aktivitedenetle',
-        data: srkln_aktvt_blg,
-        dataType: 'json',
-      }).done(function(data) {
-        console.log("drake cancel");
-        drake.cancel();
-        if(data.sayi>0) {
-          console.log("drake remove");
-          $(dragged).remove();
-          $(source).append(dragged);
-        }
-      });
-
-
-      //aktivite_denetle_ekle(srkln_aktv_id, dsln_gun_id, dsln_saat_id, 4, drake);
-      console.log(dragged.id);
-      console.log(dropped.id);
     }
   });
   $(".salon select").each(function() {
