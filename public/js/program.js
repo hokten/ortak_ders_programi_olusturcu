@@ -88,6 +88,7 @@ function delay() {
 
 
     dondurmeyi_aktiflestir($('.aktivite'));
+    dondurmeyi_aktiflestir($('.baskabolum'));
 
 
   var hucreler = Array.prototype.slice.call($("li.avt_container").toArray());

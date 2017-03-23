@@ -27,80 +27,104 @@
             <div class="tablosatiri">
                <div class="tablohucresi"></div>
                @foreach ($saatler as $saat)
-               <div class="tablohucresi"><div id="saat_{{$saat->id}}" class="saat">{{$saat->saat}}</div></div>
+                  <div class="tablohucresi"><div id="saat_{{$saat->id}}" class="saat">{{$saat->saat}}</div></div>
                @endforeach
             </div>
+
+
             @foreach ($gunler as $gun)
-            <div class="tablosatiri">
-               <div class="tablohucresi"><div id="gun_{{$gun->id}}" class="gun">{{$gun->gun}}</div></div>
-               @foreach ($saatler as $saat)
-               <div class="tablohucresi">
-                  <div id="ders_{{$gun->id}}_{{$saat->id}}" class="ders">
-                     @if ($nesne->aktvt_sayisi($gun->id, $saat->id) > 0)
-                     <!-- Aktivite kartı başı -->
-                     <div class="aktivite" id="subject_{{$nesne->aktvt_sec($gun->id, $saat->id)->ders->id}}-aktivite_{{$nesne->aktvt_sec($gun->id, $saat->id)->id}}">
-                        <!-- Aktivite kartı ön -->
-                        <div class="front {{$nesne->ders_rengi($nesne->aktvt_sec($gun->id, $saat->id)->ders->id)}}">
-                           <div class="derskodu">{{$nesne->aktvt_sec($gun->id, $saat->id)->ders->derskodu}}</div>
-                           <div class="ogretmen">{{$nesne->aktvt_sec($gun->id, $saat->id)->ogretmen->adsoyadi}}</div>
-                           <div class="salon">
-                              <a href="#/">{{$nesne->aktvt_sec($gun->id, $saat->id)->salon_cek()['salonadi']}}</a>
-                              <select id="salon_secim_{{$nesne->aktvt_sec($gun->id, $saat->id)->id}}">
-                                 @foreach ($salonlar as $salon)
-                                 <option value="{{$salon->id}}">{{$salon->salonadi}}</option>
-                                 @endforeach
-                              </select>
-                           </div>
-                        </div>
-                        <!-- Aktivite kartı arka -->
-                        <div class="back {{$nesne->ders_rengi($nesne->aktvt_sec($gun->id, $saat->id)->ders->id)}}">
-                           <div class="derskodu">{{$nesne->aktvt_sec($gun->id, $saat->id)->ders->derskodu}}</div>
-                           <div class="dersadi">{{$nesne->aktvt_sec($gun->id, $saat->id)->ders->dersadi}}</div>
-                        </div>
+               <div class="tablosatiri">
+                  <div class="tablohucresi"><div id="gun_{{$gun->id}}" class="gun">{{$gun->gun}}</div></div>
+                  @foreach ($saatler as $saat)
+                     <div class="tablohucresi">
+                        <div id="ders_{{$gun->id}}_{{$saat->id}}" class="ders">
+                           @if ($nesne->aktvt_sayisi($gun->id, $saat->id) > 0)
+                              <!-- {{$nesne->aktvt_sec($gun->id, $saat->id)->ders->sinif->program->bolum->id}} -->
+                              <!-- Aktivite kartı başı -->
+                              @if (Auth::user()->bolum->id == $nesne->aktvt_sec($gun->id, $saat->id)->ders->sinif->program->bolum->id)
+                                 <div class="aktivite" id="subject_{{$nesne->aktvt_sec($gun->id, $saat->id)->ders->id}}-aktivite_{{$nesne->aktvt_sec($gun->id, $saat->id)->id}}">
+                                    <div class="front {{$nesne->ders_rengi($nesne->aktvt_sec($gun->id, $saat->id)->ders->id)}}">
+                                       <!-- Aktivite kartı ön -->
+                                       <div class="derskodu">{{$nesne->aktvt_sec($gun->id, $saat->id)->ders->derskodu}}</div>
+                                       <div class="ogretmen">{{$nesne->aktvt_sec($gun->id, $saat->id)->ogretmen->adsoyadi}}</div>
+                                       <div class="salon">
+                                          <a href="#/">{{$nesne->aktvt_sec($gun->id, $saat->id)->salon_cek()['salonadi']}}</a>
+                                          <select id="salon_secim_{{$nesne->aktvt_sec($gun->id, $saat->id)->id}}">
+                                             @foreach ($salonlar as $salon)
+                                                <option value="{{$salon->id}}">{{$salon->salonadi}}</option>
+                                             @endforeach
+                                          </select>
+                                       </div>
+                                    </div>
+                                    <!-- Aktivite kartı arka -->
+                                    <div class="back {{$nesne->ders_rengi($nesne->aktvt_sec($gun->id, $saat->id)->ders->id)}}">
+                                       <div class="derskodu">{{$nesne->aktvt_sec($gun->id, $saat->id)->ders->derskodu}}</div>
+                                       <div class="dersadi">{{$nesne->aktvt_sec($gun->id, $saat->id)->ders->dersadi}}</div>
+                                    </div>
+                                 </div>
+                           @else
+                              <div class="baskabolum">
+                                 <!-- Başka bölüm için aktivite kartı ön -->
+                                 <div class="front">
+                                    <div class="derskodu">{{$nesne->aktvt_sec($gun->id, $saat->id)->ders->derskodu}}</div>
+                                    <div class="ogretmen">{{$nesne->aktvt_sec($gun->id, $saat->id)->ogretmen->adsoyadi}}</div>
+                                    <div class="salon">
+                                       <a href="#/">{{$nesne->aktvt_sec($gun->id, $saat->id)->salon_cek()['salonadi']}}</a>
+                                    </div>
+                                 </div>
+                                 <!-- Aktivite kartı arka -->
+                                 <div class="back">
+                                    <div class="derskodu">{{$nesne->aktvt_sec($gun->id, $saat->id)->ders->derskodu}}</div>
+                                    <div class="dersadi">{{$nesne->aktvt_sec($gun->id, $saat->id)->ders->dersadi}}</div>
+                                 </div>
+                              </div>
+                              <!-- Başka bölüm için aktivite kartı sonu -->
+                           @endif
+                        @endif
+
                      </div>
-                     <!-- Aktivite kartı sonu -->
-                     @endif
                   </div>
-               </div>
                @endforeach
             </div>
-            @endforeach
-         </div>
-      </div>
-      <div class="bostadersler">
-         @foreach ($dersler as $ders)
-         <ul class="bostaderslerlistesi" id="subject_{{$ders->id}}">
-            @foreach ($ders->aktiviteler as $aktivite)
-            <li class="avt_container">
-            @if (is_null($aktivite->gun_id) && is_null($aktivite->saat_id))
-            <div class="aktivite" id="subject_{{$ders->id}}-aktivite_{{$aktivite->id}}">
-               <div class="front {{$nesne->ders_rengi($ders->id)}}">
-                  <div class="derskodu">{{$ders->derskodu}}</div>
-                  <div class="ogretmen">{{$ders->ogretmen->adsoyadi}}</div>
-                  <div class="salon">
-                     <a href="#/">{{$aktivite->salon_cek()['salonadi']}}</a>
-                     <select id="salon_secim_{{$aktivite->id}}">
-                        <option value="0">SEÇ</option>
-                        @foreach ($salonlar as $salon)
-                        @if ($aktivite->salon_cek()['salonid'] == $salon->id)
-                        <option value="{{$salon->id}}" selected>{{$salon->salonadi}}</option>
-                        @else
-                        <option value="{{$salon->id}}">{{$salon->salonadi}}</option>
-                        @endif
-                        @endforeach
-                     </select>
-                  </div>
-               </div>
-               <div class="back {{$nesne->ders_rengi($ders->id)}}">
-                  <div class="derskodu">{{$ders->derskodu}}</div>
-                  <div class="dersadi">{{$ders->dersadi}}</div>
-               </div>
-            </div>
-            @endif
-            </li>
-            @endforeach
-         </ul>
          @endforeach
       </div>
-   </body>
+   </div>
+   <div class="bostadersler">
+      @foreach ($dersler as $ders)
+         <ul class="bostaderslerlistesi" id="subject_{{$ders->id}}">
+            @foreach ($ders->aktiviteler as $aktivite)
+               <li class="avt_container">
+               @if (is_null($aktivite->gun_id) && is_null($aktivite->saat_id))
+                  <div class="aktivite" id="subject_{{$ders->id}}-aktivite_{{$aktivite->id}}">
+                     <div class="front {{$nesne->ders_rengi($ders->id)}}">
+                        <div class="derskodu">{{$ders->derskodu}}</div>
+                        <div class="ogretmen">{{$ders->ogretmen->adsoyadi}}</div>
+                        <div class="salon">
+                           <a href="#/">{{$aktivite->salon_cek()['salonadi']}}</a>
+                           <select id="salon_secim_{{$aktivite->id}}">
+                              <option value="0">SEÇ</option>
+                              @foreach ($salonlar as $salon)
+                                 @if ($aktivite->salon_cek()['salonid'] == $salon->id)
+                                    <option value="{{$salon->id}}" selected>{{$salon->salonadi}}</option>
+                                 @else
+                                    <option value="{{$salon->id}}">{{$salon->salonadi}}</option>
+                                 @endif
+                              @endforeach
+                           </select>
+                        </div>
+                     </div>
+                     <div class="back {{$nesne->ders_rengi($ders->id)}}">
+                        <div class="derskodu">{{$ders->derskodu}}</div>
+                        <div class="dersadi">{{$ders->dersadi}}</div>
+                     </div>
+                  </div>
+               @endif
+               </li>
+            @endforeach
+         </ul>
+      @endforeach
+   </div>
+   {{-- ---------------------------------------- --}}
+   @include('tablo.tablo', ['gunler'=>$gunler, 'saatler'=>$saatler, 'nesne' => $nesne, 'salonlar'=>$salonlar]);
+</body>
 </html>

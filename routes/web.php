@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use App\Bolum;
 use App\Program;
 use App\Sinif;
@@ -11,6 +12,7 @@ use App\Aktivite;
 use App\Gun;
 use App\Saat;
 use App\Salon;
+use App\User;
 
 
 
@@ -31,9 +33,9 @@ Route::get('/', function () {
 });
 
 Route::get('/bolum', function () {
-
-  $bolumler = Bolum::all();
-    return view('bolum', ['bolumler'=>$bolumler]);
+   $bolumler = Bolum::all();
+   $kullanicilar = User::all();
+   return view('bolum', ['bolumler'=>$bolumler, 'baskanlar'=>$kullanicilar]);
 });
 
 Route::post('/bolum', function (Request $request) {
@@ -156,6 +158,9 @@ Route::get('/programolustur/{sinif_id?}', function ($sinif_id) {
 Route::get('/dersprogrami/{tip}/{kimlik}', function ($tip, $kimlik) {
    //$fff = array_column(Aktivite::where('salon_id', $kimlik)->distinct()->get(['ders_id'])->toArray(), 'ders_id');
    //dd(Ders::find($fff));
+   $bolum_id = Auth::user()->bolum->id;
+   $blme_ait_prglar = collect(Auth::user()->bolum->programlar()->get(['id'])->toArray())->pluck('id')->toArray();
+   $blme_ait_snflar = Sinif::whereIn('program_id', $blme_ait_prglar)->get(['id'])->toArray();
    $nesne = null;
    if($tip == 'ogretmen') {
       $nesne = Ogretmen::find($kimlik);
@@ -169,7 +174,7 @@ Route::get('/dersprogrami/{tip}/{kimlik}', function ($tip, $kimlik) {
    $saatler = Saat::all();
    $salonlar = Salon::all();
    return view('dersprogrami', ['gunler'=>$gunler, 'saatler' => $saatler, 'nesne' => $nesne, 'salonlar' => $salonlar, 'dersler' => $dersler]);
-});
+})->middleware('auth');
 
 
 

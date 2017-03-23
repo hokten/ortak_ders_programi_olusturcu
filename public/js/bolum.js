@@ -40,7 +40,9 @@ $(document).ready(function(){
     e.preventDefault(); 
 
     var formData = {
-      bolum: $('#frm_bolum').val()
+      bolum: $('#frm_bolum').val(),
+      user_id: $('#frm_baskan').val()
+
     }
     $.ajax({
 
